@@ -56,8 +56,8 @@ public class Profiler extends ApplicationFrame {
 	/**
 	 * Invokes timeIt with a range of `n` from `startN` until runtime exceeds `endMillis`.
 	 *
-	 * @param data.timeable
-	 * @param n
+	 * @param startN
+	 * @param endMillis
 	 * @return
 	 */
 	public XYSeries timingLoop(int startN, int endMillis) {
