@@ -1,18 +1,22 @@
 package com.allendowney.thinkdast;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Objects;
 
-public class WikiFetcher {
+
+public enum WikiFetcher {
+
+	INSTANCE;
+
 	private long lastRequestTime = -1;
 	private long minInterval = 1000;
 
@@ -35,6 +39,8 @@ public class WikiFetcher {
 
 		// TODO: avoid selecting paragraphs from sidebars and boxouts
 		Elements paras = content.select("p");
+		// avoid the problem with type list of computer language https://en.wikipedia.org/wiki/Computer_language
+		paras.addAll(content.select("li"));
 		return paras;
 	}
 
@@ -86,9 +92,8 @@ public class WikiFetcher {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		WikiFetcher wf = new WikiFetcher();
 		String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
-		Elements paragraphs = wf.readWikipedia(url);
+		Elements paragraphs = INSTANCE.readWikipedia(url);
 
 		for (Element paragraph: paragraphs) {
 			System.out.println(paragraph);

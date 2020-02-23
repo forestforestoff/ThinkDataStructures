@@ -9,18 +9,18 @@ import org.jsoup.select.Elements;
 
 public class WikiPhilosophy {
 
-    final static List<String> visited = new ArrayList<String>();
-    final static WikiFetcher wf = new WikiFetcher();
+    final static List<String> visited = new ArrayList<>();
+    final static WikiFetcher wf = WikiFetcher.INSTANCE;
 
     /**
      * Tests a conjecture about Wikipedia and Philosophy.
-     *
+     * <p>
      * https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy
-     *
+     * <p>
      * 1. Clicking on the first non-parenthesized, non-italicized link
      * 2. Ignoring external links, links to the current page, or red links
      * 3. Stopping when reaching "Philosophy", a page with no links or a page
-     *    that does not exist, or when a loop occurs
+     * that does not exist, or when a loop occurs
      *
      * @param args
      * @throws IOException
@@ -29,7 +29,7 @@ public class WikiPhilosophy {
         String destination = "https://en.wikipedia.org/wiki/Philosophy";
         String source = "https://en.wikipedia.org/wiki/Java_(programming_language)";
 
-        testConjecture(destination, source, 10);
+        testConjecture(destination, source, 20);
     }
 
     /**
@@ -40,6 +40,28 @@ public class WikiPhilosophy {
      * @throws IOException
      */
     public static void testConjecture(String destination, String source, int limit) throws IOException {
-        // TODO: FILL THIS IN!
+        String url = source;
+        for (int i = 0; i < limit; i++) {
+            if (visited.contains(url)) {
+                System.err.println("Already had such link, closed-loop.");
+                return;
+            }
+            visited.add(url);
+            Elements elements = WikiFetcher.INSTANCE.fetchWikipedia(url);
+            WikiParser wikiParser = new WikiParser(elements);
+            Element firstLink = wikiParser.findFirstLink();
+            if (firstLink == null) {
+                System.err.println("No valid links.");
+                return;
+            }
+
+            System.out.println(firstLink.text() + " : " + firstLink.absUrl("href"));
+            url = firstLink.absUrl("href");
+
+            if (url.equals(destination)) {
+                System.out.println("Gotcha!");
+                break;
+            }
+        }
     }
 }

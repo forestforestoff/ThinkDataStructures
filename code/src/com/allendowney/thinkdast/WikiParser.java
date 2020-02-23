@@ -32,7 +32,7 @@ public class WikiParser {
 	 */
 	public WikiParser(Elements paragraphs) {
 		this.paragraphs = paragraphs;
-		this.parenthesisStack = new ArrayDeque<String>();
+		this.parenthesisStack = new ArrayDeque<>();
 	}
 	
 	/**
