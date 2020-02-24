@@ -16,7 +16,7 @@ import org.jsoup.select.Elements;
  */
 public class Index {
 
-    private Map<String, Set<TermCounter>> index = new HashMap<String, Set<TermCounter>>();
+    private Map<String, Set<TermCounter>> index = new HashMap<>();
 
     /**
      * Adds a TermCounter to the set associated with `term`.
@@ -29,7 +29,7 @@ public class Index {
 
         // if we're seeing a term for the first time, make a new Set
         if (set == null) {
-            set = new HashSet<TermCounter>();
+            set = new HashSet<>();
             index.put(term, set);
         }
         // otherwise we can modify an existing Set
@@ -79,11 +79,9 @@ public class Index {
      * @param paragraphs  Collection of elements that should be indexed.
      */
     public void indexPage(String url, Elements paragraphs) {
-        // TODO: Your code here
-
-        // make a TermCounter and count the terms in the paragraphs
-
-        // for each term in the TermCounter, add the TermCounter to the index
+        TermCounter termCounter = new TermCounter(url);
+        termCounter.processElements(paragraphs);
+        termCounter.keySet().forEach(s -> add(s, termCounter));
     }
 
     /**

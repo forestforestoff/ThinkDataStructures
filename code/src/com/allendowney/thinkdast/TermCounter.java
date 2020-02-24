@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -23,7 +24,7 @@ public class TermCounter {
 
 	public TermCounter(String label) {
 		this.label = label;
-		this.map = new HashMap<String, Integer>();
+		this.map = new HashMap<>();
 	}
 
 	public String getLabel() {
@@ -36,8 +37,7 @@ public class TermCounter {
 	 * @return
 	 */
 	public int size() {
-		// TODO: FILL THIS IN!
-		return 0;
+		return map.values().stream().mapToInt(Integer::intValue).sum();
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class TermCounter {
 		WikiFetcher wf = new WikiFetcher();
 		Elements paragraphs = wf.fetchWikipedia(url);
 
-		TermCounter counter = new TermCounter(url.toString());
+		TermCounter counter = new TermCounter(url);
 		counter.processElements(paragraphs);
 		counter.printCounts();
 	}
