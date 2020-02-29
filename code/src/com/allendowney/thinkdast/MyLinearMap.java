@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class MyLinearMap<K, V> implements Map<K, V> {
 
-	private List<Entry> entries = new ArrayList<Entry>();
+	private List<Entry> entries = new ArrayList<>();
 
 	public class Entry implements Map.Entry<K, V> {
 		private K key;
@@ -63,7 +63,11 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-		// TODO: FILL THIS IN!
+		for (Entry entry : entries) {
+			if (equals(entry.getKey(), target)) {
+				return entry;
+			}
+		}
 		return null;
 	}
 
@@ -98,7 +102,10 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-		// TODO: FILL THIS IN!
+		Entry entry = findEntry(key);
+		if (entry != null) {
+			return entry.getValue();
+		}
 		return null;
 	}
 
@@ -109,7 +116,7 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public Set<K> keySet() {
-		Set<K> set = new HashSet<K>();
+		Set<K> set = new HashSet<>();
 		for (Entry entry: entries) {
 			set.add(entry.getKey());
 		}
@@ -118,7 +125,13 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-		// TODO: FILL THIS IN!
+		Entry entry = findEntry(key);
+		if (entry != null) {
+			V oldValue = entry.getValue();
+			entry.setValue(value);
+			return oldValue;
+		}
+		entries.add(new Entry(key, value));
 		return null;
 	}
 
@@ -131,7 +144,11 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		// TODO: FILL THIS IN!
+		Entry entry = findEntry(key);
+		if (entry != null) {
+			entries.remove(entry);
+			return entry.getValue();
+		}
 		return null;
 	}
 
@@ -142,7 +159,7 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public Collection<V> values() {
-		Set<V> set = new HashSet<V>();
+		Set<V> set = new HashSet<>();
 		for (Entry entry: entries) {
 			set.add(entry.getValue());
 		}
@@ -153,7 +170,7 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map<String, Integer> map = new MyLinearMap<String, Integer>();
+		Map<String, Integer> map = new MyLinearMap<>();
 		map.put("Word1", 1);
 		map.put("Word2", 2);
 		Integer value = map.get("Word1");
