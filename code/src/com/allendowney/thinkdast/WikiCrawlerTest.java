@@ -38,7 +38,7 @@ public class WikiCrawlerTest {
 		wc = new WikiCrawler(source, index);
 
 		// for testing purposes, load up the queue
-		WikiFetcher wf = new WikiFetcher();
+		WikiFetcher wf = WikiFetcher.INSTANCE;
 		Elements paragraphs = wf.readWikipedia(source);
 		wc.queueInternalLinks(paragraphs);
 	}
@@ -52,7 +52,7 @@ public class WikiCrawlerTest {
 	}
 
 	/**
-	 * Test method for {@link WikiCrawler#crawl()}.
+	 * Test method for {@link WikiCrawler#crawl(boolean testing)}.
 	 * @throws IOException
 	 */
 	@Test

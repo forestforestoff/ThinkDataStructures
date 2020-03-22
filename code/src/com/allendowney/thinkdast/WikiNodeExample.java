@@ -46,7 +46,7 @@ public class WikiNodeExample {
 	}
 
 	private static void iterativeDFS(Node root) {
-		Deque<Node> stack = new ArrayDeque<Node>();
+		Deque<Node> stack = new ArrayDeque<>();
 		stack.push(root);
 
 		// if the stack is empty, we're done
@@ -59,7 +59,7 @@ public class WikiNodeExample {
 			}
 
 			// push the children onto the stack in reverse order
-			List<Node> nodes = new ArrayList<Node>(node.childNodes());
+			List<Node> nodes = new ArrayList<>(node.childNodes());
 			Collections.reverse(nodes);
 			
 			for (Node child: nodes) {
