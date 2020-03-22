@@ -35,9 +35,9 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	 * @param k
 	 */
 	protected void makeMaps(int k) {
-		maps = new ArrayList<MyLinearMap<K, V>>(k);
+		maps = new ArrayList<>(k);
 		for (int i=0; i<k; i++) {
-			maps.add(new MyLinearMap<K, V>());
+			maps.add(new MyLinearMap<>());
 		}
 	}
 
@@ -62,15 +62,17 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsKey(Object target) {
-		// to find a key, we only have to search one map
-		// TODO: FILL THIS IN!
-		return false;
+		MyLinearMap<K, V> map = chooseMap(target);
+		return map.containsKey(target);
 	}
 
 	@Override
 	public boolean containsValue(Object target) {
-		// to find a value, we have to search all map
-		// TODO: FILL THIS IN!
+		for (MyLinearMap<K, V> map : maps) {
+			if (map.containsValue(target)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -93,7 +95,7 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	@Override
 	public Set<K> keySet() {
 		// add up the keySets from the sub-maps
-		Set<K> set = new HashSet<K>();
+		Set<K> set = new HashSet<>();
 		for (MyLinearMap<K, V> map: maps) {
 			set.addAll(map.keySet());
 		}
@@ -132,7 +134,7 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	@Override
 	public Collection<V> values() {
 		// add up the valueSets from the sub-maps
-		Set<V> set = new HashSet<V>();
+		Set<V> set = new HashSet<>();
 		for (MyLinearMap<K, V> map: maps) {
 			set.addAll(map.values());
 		}
@@ -143,7 +145,7 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map<String, Integer> map = new MyBetterMap<String, Integer>();
+		Map<String, Integer> map = new MyBetterMap<>();
 		map.put("Word1", 1);
 		map.put("Word2", 2);
 		Integer value = map.get("Word1");
