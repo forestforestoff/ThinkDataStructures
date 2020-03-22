@@ -56,13 +56,13 @@ public class MyLinkedList<E> implements List<E> {
 	 */
 	public static void main(String[] args) {
 		// run a few simple tests
-		List<Integer> mll = new MyLinkedList<Integer>();
+		List<Integer> mll = new MyLinkedList<>();
 		mll.add(1);
 		mll.add(2);
 		mll.add(3);
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 
-		mll.remove(new Integer(2));
+		mll.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 	}
 
@@ -82,7 +82,13 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+		if (index == 0) {
+			head = new Node(element, head);
+		} else {
+			Node prevNode = getNode(index - 1);
+			prevNode.next = new Node(element, prevNode.next);
+		}
+		size++;
 	}
 
 	@Override
@@ -143,7 +149,11 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
+		for (int i = 0; i < size; i++) {
+			if (equals(get(i), target)) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -152,7 +162,7 @@ public class MyLinkedList<E> implements List<E> {
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
-	 * @param object
+	 * @param element
 	 */
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
@@ -208,8 +218,15 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+		E element = get(index);
+		if (index == 0) {
+			head = head.next;
+		} else {
+			Node prevNode = getNode(index - 1);
+			prevNode.next = prevNode.next.next;
+		}
+		size--;
+		return element;
 	}
 
 	@Override
@@ -246,7 +263,7 @@ public class MyLinkedList<E> implements List<E> {
 		}
 		// TODO: classify this and improve it.
 		int i = 0;
-		MyLinkedList<E> list = new MyLinkedList<E>();
+		MyLinkedList<E> list = new MyLinkedList<>();
 		for (Node node=head; node != null; node = node.next) {
 			if (i >= fromIndex && i <= toIndex) {
 				list.add(node.data);
