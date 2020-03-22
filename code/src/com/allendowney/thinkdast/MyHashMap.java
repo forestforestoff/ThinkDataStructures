@@ -36,20 +36,23 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	/**
 	 * Doubles the number of maps and rehashes the existing entries.
 	 */
-	/**
-	 *
-	 */
 	protected void rehash() {
-		// TODO: FILL THIS IN!
+		List<MyLinearMap<K, V>> oldMaps = maps;
+		makeMaps(maps.size() * 2);
+		for (MyLinearMap<K, V> map : oldMaps) {
+			for (Map.Entry<K, V> entry : map.getEntries()) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map<String, Integer> map = new MyHashMap<String, Integer>();
-		for (int i=0; i<10; i++) {
-			map.put(new Integer(i).toString(), i);
+		Map<String, Integer> map = new MyHashMap<>();
+		for (int i = 0; i < 10; i++) {
+			map.put(Integer.toString(i), i);
 		}
 		Integer value = map.get("3");
 		System.out.println(value);
