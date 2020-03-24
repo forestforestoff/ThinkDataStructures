@@ -71,7 +71,19 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 		@SuppressWarnings("unchecked")
 		Comparable<? super K> k = (Comparable<? super K>) target;
 
-		// TODO: FILL THIS IN!
+		Node node = root;
+		while (node != null) {
+			int cmp = k.compareTo(node.key);
+			if (cmp == 0) {
+				return node;
+			}
+			if (cmp > 0) {
+				node = node.right;
+			}
+			if (cmp < 0) {
+				node = node.left;
+			}
+		}
 		return null;
 	}
 
@@ -95,8 +107,16 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	}
 
 	private boolean containsValueHelper(Node node, Object target) {
-		// TODO: FILL THIS IN!
-		return false;
+		if (node == null) {
+			return false;
+		}
+		if (containsValueHelper(node.left, target)) {
+			return true;
+		}
+		if (containsValueHelper(node.right, target)) {
+			return true;
+		}
+		return equals(target, node.value);
 	}
 
 	@Override
@@ -121,8 +141,15 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	@Override
 	public Set<K> keySet() {
 		Set<K> set = new LinkedHashSet<K>();
-		// TODO: FILL THIS IN!
+		addKeyToSet(root, set);
 		return set;
+	}
+
+	private void addKeyToSet(Node node, Set<K> set) {
+		if (node == null) return;
+		addKeyToSet(node.left, set);
+		set.add(node.key);
+		addKeyToSet(node.right, set);
 	}
 
 	@Override
@@ -139,8 +166,30 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 	}
 
 	private V putHelper(Node node, K key, V value) {
-		// TODO: FILL THIS IN!
-		return null;
+		@SuppressWarnings("unchecked")
+		Comparable<? super K> k = (Comparable<? super K>) key;
+		int cmp = k.compareTo(node.key);
+		if (cmp < 0) {
+			if (node.left == null) {
+				node.left = new Node(key, value);
+				size++;
+				return null;
+			} else {
+				return putHelper(node.left, key, value);
+			}
+		}
+		if (cmp > 0) {
+			if (node.right == null) {
+				node.right = new Node(key, value);
+				size++;
+				return null;
+			} else {
+				return putHelper(node.right, key, value);
+			}
+		}
+		V oldValue = node.value;
+		node.value = value;
+		return oldValue;
 	}
 
 	@Override
@@ -152,7 +201,7 @@ public class MyTreeMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		// OPTIONAL TODO: FILL THIS IN!
+		Node node = findNode(key);
 		throw new UnsupportedOperationException();
 	}
 
